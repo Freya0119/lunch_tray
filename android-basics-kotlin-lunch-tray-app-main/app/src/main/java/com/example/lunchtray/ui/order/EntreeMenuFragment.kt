@@ -16,14 +16,19 @@
 package com.example.lunchtray.ui.order
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.RadioButton
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.lunchtray.R
 import com.example.lunchtray.databinding.FragmentEntreeMenuBinding
+import com.example.lunchtray.model.MenuItem
 import com.example.lunchtray.model.OrderViewModel
 
 /**
@@ -61,7 +66,8 @@ class EntreeMenuFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = sharedViewModel
-            // TODO: initialize the EntreeMenuFragment variables
+            // TODO: initialize the EntreeMenuFragment variables)
+            entreeFragment = this@EntreeMenuFragment
         }
     }
 
@@ -78,6 +84,8 @@ class EntreeMenuFragment : Fragment() {
     fun cancelOrder() {
         // TODO: Reset order in view model
         // TODO: Navigate back to the [StartFragment] to start over
+        sharedViewModel.resetOrder()
+        findNavController().navigate(R.id.action_entreeMenuFragment_to_startOrderFragment)
     }
 
     /**

@@ -15,12 +15,15 @@
  */
 package com.example.lunchtray.ui.order
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.lunchtray.R
 import com.example.lunchtray.databinding.FragmentCheckoutBinding
 import com.example.lunchtray.model.OrderViewModel
@@ -35,9 +38,11 @@ class CheckoutFragment : Fragment() {
     // This property is non-null between the onCreateView() and onDestroyView() lifecycle callbacks,
     // when the view hierarchy is attached to the fragment.
     private var _binding: FragmentCheckoutBinding? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
     // Use the 'by activityViewModels()' Kotlin property delegate from the fragment-ktx artifact
     private val sharedViewModel: OrderViewModel by activityViewModels()
 
@@ -63,6 +68,8 @@ class CheckoutFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             // TODO: initialize the OrderViewModel and CheckoutFragment variables
+            viewModel = sharedViewModel
+            checkoutFragment = this@CheckoutFragment
         }
     }
 
@@ -72,6 +79,8 @@ class CheckoutFragment : Fragment() {
     fun cancelOrder() {
         // TODO: Reset order in view model
         // TODO: Navigate back to the [StartFragment] to start over
+        sharedViewModel.resetOrder()
+        findNavController().navigate(R.id.action_checkoutFragment_to_startOrderFragment)
     }
 
     /**
@@ -82,6 +91,13 @@ class CheckoutFragment : Fragment() {
         Snackbar.make(binding.root, R.string.submit_order, Snackbar.LENGTH_SHORT).show()
         // TODO: Reset order in view model
         // TODO: Navigate back to the [StartFragment] to start over
+        val intent =
+            Intent(Intent.ACTION_SEND)
+                .setType("text/plain")
+                .putExtra(Intent.EXTRA_SUBJECT, "AAA")
+                .putExtra(Intent.EXTRA_TITLE, "BBB")
+        if (activity?.packageManager?.resolveActivity(intent, 0) != null) startActivity(intent)
+        findNavController().navigate(R.id.action_checkoutFragment_to_startOrderFragment)
     }
 
     /**
